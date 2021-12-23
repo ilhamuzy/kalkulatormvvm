@@ -1,0 +1,134 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+def cmd = 'git rev-list HEAD --count'
+//def gitVersion = cmd.execute().text.trim().toInteger()
+
+android {
+    def versionMajor = 1
+    def versionMinor = 0
+    def versionPatch = 0
+
+//    def versionBuild = gitVersion
+
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.example.kalkulatormvvm"
+        minSdkVersion 22
+        targetSdkVersion 30
+
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        buildConfigField "String", "APP_VERSION", "\"V${versionMajor}.${versionMinor}.${versionPatch}-${versionBuild}\""
+//        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+//        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    buildTypes {
+
+        debug {
+            debuggable true
+            zipAlignEnabled false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), './../proguard.cfg'
+
+
+            buildConfigField "Boolean", "DEBUG_BUILD", "true"
+
+            resValue "string", "app_name", "Kalkulator-DEBUG"
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            resValue "string", "app_name", "Kalkulator"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+    def deps = rootProject.ext.deps
+
+    //Androidx
+    implementation deps.androidx.ACTIVITY_KTX //
+    implementation deps.androidx.APP_COMPAT //
+    implementation deps.androidx.CORE_KTX //
+    implementation deps.androidx.CONSTRAINT_LAYOUT //
+    implementation deps.androidx.RECYCLER_VIEW
+
+    implementation deps.androidx.NAVIGATION_FRAGMENT
+    implementation deps.androidx.NAVIGATION_UI
+
+    implementation deps.androidx.LIFECYCLE_VIEWMODEL //
+    implementation deps.androidx.LIFECYCLE_RUNTIME //
+    implementation deps.androidx.LIFECYCLE_EXTENSIONS //
+    implementation deps.androidx.LIFECYCLE_LIVEDATA //
+
+
+    implementation deps.dagger.HILT_ANDROID //
+    kapt deps.dagger.HILT_ANDROID_COMPILER //
+
+    // Room
+    kapt deps.androidx.ROOM_COMPILER //
+    implementation deps.androidx.ROOM_RUNTIME //
+    implementation deps.androidx.ROOM_KTX //
+    implementation deps.androidx.WORK_RUNTIME //
+
+    //misc
+    implementation deps.misc.MATERIAL_DESIGN //
+    implementation deps.misc.ORHANOBUT //
+    implementation deps.misc.PERMISSION //
+    implementation deps.misc.DIALOG //
+    implementation deps.misc.BOTTOMSHEET  //
+    implementation deps.misc.LOTTIE //
+    implementation deps.misc.BLUR //
+    implementation deps.misc.PINVIEW //
+    implementation deps.misc.BALOON //
+    implementation deps.misc.CHART //
+
+
+    //Kotlin
+    implementation deps.kotlinlib.STD_LIB //
+    implementation deps.kotlinlib.COROUTINES_CORE //
+    implementation deps.kotlinlib.COROUTINES_ANDROID //
+
+    // Retrofit
+    implementation deps.square.LOGGING_INTERCEPTOR //
+    implementation deps.square.OKHTTP //
+    implementation deps.square.RETROFIT //
+    implementation deps.square.RETROFIT_MOSHI
+    implementation deps.square.RETROFIT_GSON //
+
+
+    // Glide
+    kapt deps.glide.GLIDE_COMPILER //
+    implementation deps.glide.GLIDE //
+
+    // Chucker
+    debugImplementation deps.chucker.CHUCKER_DEBUG //
+    releaseImplementation deps.chucker.CHUCKER_NO_OP_RELEASE //
+
+}
